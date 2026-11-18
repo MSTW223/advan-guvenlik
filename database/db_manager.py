@@ -2,7 +2,17 @@ import sqlite3
 import os
 import bcrypt
 
-DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "advan_guvenlik.db")
+# وضع قاعدة البيانات في مجلد آمن داخل مستندات المستخدم أو مسار البرنامج لضمان صلاحيات الكتابة
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_DIR = os.path.join(BASE_DIR, "database")
+
+if not os.path.exists(DB_DIR):
+    try:
+        os.makedirs(DB_DIR, exist_ok=True)
+    except Exception:
+        DB_DIR = BASE_DIR  # في حال لم يتمكن، يحفظها في المجلد الرئيسي مباشرة
+
+DB_PATH = os.path.join(DB_DIR, "advan_guvenlik.db")
 
 class DatabaseManager:
     def __init__(self, db_path=DB_PATH):
